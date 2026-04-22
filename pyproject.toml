@@ -1,0 +1,13 @@
+[project]
+name = "study-a2a-ollama"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.11"
+dependencies = [
+    "a2a-sdk>=0.3.26",
+    "httpx>=0.28.1",
+    "langchain-ollama>=1.1.0",
+    "langgraph>=1.1.9",
+    "strands-agents[a2a]>=1.36.0",
+    "uvicorn>=0.45.0",
+]
