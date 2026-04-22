@@ -57,6 +57,22 @@ cd study-a2a-ollama
 uv sync
 ```
 
+### （個人用）gitleaks pre-commit hook の有効化
+
+このリポは個人学習用で、ローカルに置いた `.gitleaks.toml`（`.gitignore` 済み）で
+機密ワードをコミット前に弾く運用をしている。新しいマシンで clone した直後に 1 度だけ:
+
+```bash
+brew install gitleaks                    # 未導入なら
+git config core.hooksPath .githooks      # .githooks/pre-commit を有効化
+cp /path/to/your/.gitleaks.toml ./       # 個人ルールを配置（push されない）
+```
+
+hook は 2 つのガードを兼ねる:
+
+1. `.gitleaks.toml` が無いと commit を拒否（別マシンで設置忘れ防止）
+2. `.gitleaks.toml` が有れば `gitleaks protect --staged` で staged diff をスキャン
+
 ---
 
 ## 1. greeting: 異なるフレームワークが同じ A2A で喋る
