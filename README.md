@@ -1,10 +1,12 @@
 # study-a2a-ollama
 
-A2A プロトコルを手で触って理解するための最小構成サンプル集。Ollama をバックエンドとして、以下 3 つの異なる観点で A2A の挙動を観察する:
+A2A プロトコルを手で触って理解するための最小構成サンプル集。Ollama をバックエンドとして、以下 5 つの異なる観点で A2A の挙動を観察する:
 
-1. **greeting**: LangGraph と Strands という異なるフレームワークで作ったエージェントが同じ A2A クライアントから透過的に呼べることを確認（cross-talk も含む）
+1. **greeting**: LangGraph と Strands という異なるフレームワークで作ったエージェントが同じ A2A クライアントから透過的に呼べることを確認（cross-talk でフレームワーク暗黙ステートフル性も発見）
 2. **task_lifecycle**: 長時間タスクの `submitted → working → completed` 状態遷移を SSE ストリーミングで観察
 3. **human_oracle**: 人間を「独立した Agent Card を持つノード」として A2A メッシュに参加させる実験（`INPUT_REQUIRED` を使わず、人間そのものを 1 エージェントとして扱う）
+4. **agent_mesh**: Agent A → Agent B → Human Oracle の 3 ホップ委譲。各エージェントは隣しか知らないまま協調する最小実証
+5. **agent_discover**: 10 個のおとりと 1 個の本命を並べて、**LLM が Agent Card のカタログから適切な相手を自律的に選ぶ**ルーティング実験
 
 ## ディレクトリ構成
 
