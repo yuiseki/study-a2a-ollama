@@ -1,0 +1,30 @@
+#!/bin/bash
+# 1) .gitleaks.toml が無ければコミットさせない（別マシンで設置忘れを検知）
+# 2) .gitleaks.toml が有れば gitleaks protect --staged で staged diff をスキャン
+#
+# このフックを有効化するには 1 度だけ:
+#   git config core.hooksPath .githooks
+set -euo pipefail
+
+CONFIG=".gitleaks.toml"
+if [[ ! -f "$CONFIG" ]]; then
+  echo "==============================================================" >&2
+  echo "[pre-commit] .gitleaks.toml がありません。commit を中止します。" >&2
+  echo "[pre-commit] 個人の別マシン用ルールを置いてから再度 commit してください。" >&2
+  echo "[pre-commit] 参考: .gitleaks.toml は .gitignore 済み（push されない）。" >&2
+  echo "==============================================================" >&2
+  exit 1
+fi
+
+if ! command -v gitleaks >/dev/null 2>&1; then
+  echo "[pre-commit] gitleaks が PATH にありません。brew install gitleaks" >&2
+  exit 1
+fi
+
+# staged 変更のみスキャン（--staged は gitleaks 8 系のフラグ）
+gitleaks protect --staged --config="$CONFIG" --redact -v || {
+  echo "" >&2
+  echo "[pre-commit] gitleaks がシークレットまたは禁止ワードを検出しました。" >&2
+  echo "[pre-commit] 該当箇所を修正してから再度 commit してください。" >&2
+  exit 1
+}
